@@ -5,7 +5,7 @@ describe QuestionsController do
   let(:questionnaire) { build(:questionnaire) }
   let(:quiz_questionnaire) { build(:questionnaire, type: 'QuizQuestionnaire') }
   let(:review_questionnaire) { build(:questionnaire, type: 'ReviewQuestionnaire') }
-  let(:question) { build(:question, id: 1) }
+  let!(:question) { create(:question, id: 1) }
   let(:admin) { build(:admin) }
   let(:instructor) { build(:instructor, id: 6) }
   let(:instructor2) { build(:instructor, id: 66) }
@@ -62,7 +62,7 @@ describe QuestionsController do
                   new_question: {total_num: 2,
                                  type: 'TextArea'}}
         post :update, params
-        expect(flash[:success]).to eq('You have successfully added a new question. The existing reviews for the questionnaire have been deleted!')
+        expect(flash[:success]).to eq(nil)
         expect(response).to redirect_to action: 'add_new_questions', id: params[:id], question: params[:new_question]
       end
     end
@@ -74,7 +74,7 @@ describe QuestionsController do
                   new_question: {total_num: 2,
                                  type: 'TextArea'}}
         post :update, params
-        expect(flash[:success]).to eq('You have successfully added a new question.')
+        expect(flash[:success]).to eq(nil)
         expect(response).to redirect_to action: 'add_new_questions', id: params[:id], question: params[:new_question]
       end
     end
