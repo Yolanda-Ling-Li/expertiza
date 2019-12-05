@@ -12,4 +12,15 @@ class AssignmentQuestionnaire < ActiveRecord::Base
       return record.assignment, record.used_in_round
     end
   end
+
+  def self.get_rounds(assignment_id)
+    assignment = self.includes(:assignment).where(assignment_id:assignment_id).last.assignment
+    records = self.where(assignment_id:assignment_id)
+    rounds = []
+    records.each do |record|
+      rounds.push record.used_in_round
+    end
+    return assignment, rounds
+  end
+
 end
