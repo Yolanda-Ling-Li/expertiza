@@ -62,4 +62,17 @@ describe AnswerHelper do
       expect(AnswerHelper.in_active_period(2)).to eql(false)
     end
   end
+
+  describe '#has_questionnaire_in_period' do
+    it 'returns true when the current time in any active period' do
+      allow(AssignmentQuestionnaire).to receive(:get_rounds).with(1).and_return([@assignment1, 1])
+      allow(@assignment1).to receive(:find_review_period).with(1).and_return([[@duedate1], [@duedate2]])
+      expect(AnswerHelper.has_questionnaire_in_period(1)).to eql(true)
+    end
+    it 'returns false when the current time is not in any active period' do
+      allow(AssignmentQuestionnaire).to receive(:get_rounds).with(2).and_return([@assignment1, 2])
+      allow(@assignment1).to receive(:find_review_period).with(2).and_return([[@duedate3], [@duedate4]])
+      expect(AnswerHelper.has_questionnaire_in_period(2)).to eql(false)
+    end
+  end
 end
